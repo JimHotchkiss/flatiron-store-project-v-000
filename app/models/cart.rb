@@ -5,12 +5,9 @@ class Cart < ActiveRecord::Base
 
    def add_item(item_id)
      already_in_cart = self.line_items.find_by(item_id: item_id)
-
      if already_in_cart
-
        already_in_cart.quantity += 1
        already_in_cart
-
      else
        line_items.build(item_id: item_id)
      end
