@@ -9,8 +9,8 @@
           <li> <%= link_to("Sign up", user_registration_path, :method => 'post')%> </li>
 
         <% end %>
-          <% if !!@cart %>
-            <li> <%= link_to "Cart", cart_path(current_cart) %></li>
+          <% if current_user %>
+            <li> <%= link_to "Cart", cart_path(current_user.current_cart) %></li>
         <% end %>
 
 
