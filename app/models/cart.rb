@@ -4,13 +4,14 @@ class Cart < ActiveRecord::Base
    belongs_to :user
 
    def add_item(item_id)
-     already_in_cart = self.line_items.find_by(item_id: item_id)
-     if already_in_cart
-       already_in_cart.quantity += 1
-       already_in_cart
+     items_in_cart = self.line_items.find_by(item_id: item_id)
+     if items_in_cart
+       items_in_cart.quantity += 1
+       items_in_cart.save
      else
-       line_items.build(item_id: item_id)
+       items_in_cart = line_items.build(item_id: item_id)
      end
+     items_in_cart
    end
 
 
@@ -22,7 +23,29 @@ class Cart < ActiveRecord::Base
      total
    end
 
-   
+   def checkout
+     self.status = 'submitted'
+     update_inventory
+   end
+
+   def update_inventory
+     if self.status == 'submitted'
+       self.line_items.each do |line_item|
+         line_item.item.inventory -= line_item.quantity
+         line_item.item.save
+       end
+     end
+   end
+
+   def clear_cart
+     self.line_items = []
+   end
+
+
+
+
+
+
 
 
 

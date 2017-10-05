@@ -7,9 +7,17 @@ class CartsController < ApplicationController
   end
 
   def checkout
-    binding.pry
-    redirect_to cart_path
+    @cart = find_cart
+    if @cart
+      @cart.checkout
+
+      @cart.line_items = []
+      redirect_to cart_path
+    end
+
   end
+
+
   private
 
   def find_cart
